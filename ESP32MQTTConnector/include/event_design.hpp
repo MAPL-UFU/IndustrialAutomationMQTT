@@ -31,18 +31,26 @@ class MQTTEventHandler : public EventHandler
         static void onEventData(void*, esp_event_base_t, int32_t, void*);
 };
 
-/*
-class CustomEventHandler : public EventHandler
+
+class SeriallEventHandler : public EventHandler
 {
     private:
-        inline static const char* CLASS_TAG = "CustomEventHandler";
+        inline static const char* CLASS_TAG = "SerialEventHandler";
         esp_event_loop_handle_t event_loop;
     public:
-        void register_events(void*);
+        void register_events(void*){};
         void register_custom_events(esp_event_loop_handle_t);
         void log(std::string);
 
         static void onEventSendSerialInteger(void*, esp_event_base_t, int32_t, void*);
         static void onEventSendSerialString(void*, esp_event_base_t, int32_t, void*);
 };
-*/
+
+class CustomEventHandler : public MQTTEventHandler, public SeriallEventHandler
+{
+    private:
+        inline static const char* CLASS_TAG = "CustomEventHandler";
+    public:
+        void register_events(void*);
+};
+

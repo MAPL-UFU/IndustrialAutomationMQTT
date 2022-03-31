@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <functional>
+#include <iostream>
 
 #include "mqtt_client.h"
 #include "esp_event.h"
@@ -15,11 +16,11 @@ void MQTTEventHandler::register_mqtt_events(esp_mqtt_client* client)
 {
     this->client = client;
     esp_mqtt_client_register_event(this->client, MQTT_EVENT_CONNECTED, MQTTEventHandler::onEventConnected,this);
-    esp_mqtt_client_register_event(this->client, MQTT_EVENT_CONNECTED, MQTTEventHandler::onEventDisconnected,this);
-    esp_mqtt_client_register_event(this->client, MQTT_EVENT_CONNECTED, MQTTEventHandler::onEventSubscribed,this);
-    esp_mqtt_client_register_event(this->client, MQTT_EVENT_CONNECTED, MQTTEventHandler::onEventUnsubscribed,this);
-    esp_mqtt_client_register_event(this->client, MQTT_EVENT_CONNECTED, MQTTEventHandler::onEventError,this);
-    esp_mqtt_client_register_event(this->client, MQTT_EVENT_CONNECTED, MQTTEventHandler::onEventData,this);
+    esp_mqtt_client_register_event(this->client, MQTT_EVENT_DISCONNECTED, MQTTEventHandler::onEventDisconnected,this);
+    esp_mqtt_client_register_event(this->client, MQTT_EVENT_SUBSCRIBED, MQTTEventHandler::onEventSubscribed,this);
+    esp_mqtt_client_register_event(this->client, MQTT_EVENT_UNSUBSCRIBED, MQTTEventHandler::onEventUnsubscribed,this);
+    esp_mqtt_client_register_event(this->client, MQTT_EVENT_ERROR, MQTTEventHandler::onEventError,this);
+    esp_mqtt_client_register_event(this->client, MQTT_EVENT_DATA, MQTTEventHandler::onEventData,this);
 }
 
 void MQTTEventHandler::onEventConnected(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data){
@@ -53,8 +54,10 @@ void MQTTEventHandler::onEventData(void *handler_args, esp_event_base_t base, in
     context->log("ESP MQTT Data");
 
     esp_mqtt_event_handle_t event = (esp_mqtt_event_handle_t)event_data;
-    printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
-    printf("DATA=%.*s\r\n", event->data_len, event->data);
+    string topic(event->topic, event->topic_len);
+    string payload(event->data, event->data_len);
+    context->log("Topic: " + topic);
+    context->log("Payload: " + payload);
 }
 
 void MQTTEventHandler::log(string message){
