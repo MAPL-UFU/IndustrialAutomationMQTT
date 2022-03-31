@@ -1,3 +1,5 @@
+//this tag is used for onli not class methods
+//avoiding the use of static methods
 #define PROGRAM_TAG "ESP32_CLOUD_CONNECTOR"
 
 #include <iostream>
@@ -13,8 +15,6 @@
 
 #include "mqtt_connector.cpp"
 //#include "serial_connector.cpp"
-//
-#include "event_design.hpp"
 
 using namespace std;
 
@@ -25,10 +25,10 @@ void main_event_handler(void* handler_arg, esp_event_base_t base, int32_t id, vo
 
 void main_init(){
     esp_log_level_set("*", ESP_LOG_INFO);
-    ESP_LOGI(PROGRAM_TAG, "Main Task Initializing");
-
-    esp_event_loop_args_t loop_args = {
-        .queue_size = 10 ,
+    ESP_LOGI(PROGRAM_TAG, "Main Task In itializing");
+ 
+    esp_event_loop_args_t loop_args = { 
+        .queue_size = 10 , 
         .task_name = "main_event_loop",
         .task_priority = tskIDLE_PRIORITY,
         .task_stack_size = 4096,
@@ -37,7 +37,7 @@ void main_init(){
 
     esp_event_loop_handle_t* loop_handle_pointer = new esp_event_loop_handle_t(); 
     esp_event_loop_create(&loop_args,loop_handle_pointer); // using a dedicated task
-    esp_event_handler_register_with(*loop_handle_pointer, MAIN_EVENT, 22, main_event_handler, NULL);
+    //esp_event_handler_register_with(*loop_handle_pointer, CUSTOM_EVENT_BASE, EVENT_SEND_SERIAL_STRING_ID, main_event_handler, NULL);
 
     startMQTT(loop_handle_pointer); // Start MQTT, this use event loop in a specific task                        
 /*
@@ -50,7 +50,7 @@ void main_init(){
                             tskNO_AFFINITY);                 
 */
 
-    ESP_ERROR_CHECK(esp_event_post_to(*loop_handle_pointer , MAIN_EVENT, 22, NULL,0,0));
+    //ESP_ERROR_CHECK(esp_event_post_to(*loop_handle_pointer , CUSTOM_EVENT_BASE, EVENT_SEND_SERIAL_STRING_ID, NULL,0,0));
 }
 
 extern "C" void app_main(void)
