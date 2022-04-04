@@ -1,3 +1,5 @@
+#pragma once
+
 #include "driver/uart.h"
 #include "driver/gpio.h"
 
@@ -13,7 +15,7 @@
 
 #include "esp_event.h"
 #include "esp_log.h"
-#include "event_design.hpp"
+#include "SerialEventHandler.hpp"
 
 #define ECHO_TEST_TXD (GPIO_NUM_4)
 #define ECHO_TEST_RXD (GPIO_NUM_2)
@@ -47,14 +49,12 @@ void install_serial(){
     ESP_ERROR_CHECK(uart_set_pin(ECHO_UART_PORT_NUM, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS));
 }
 
-void vTaskSerial(esp_event_loop_handle_t* event_loop)
+void startSerial(SerialEventHandler* serial_handler,esp_event_loop_handle_t* event_loop)
 {
-    install_serial();
-    //ESP_ERROR_CHECK(esp_event_loop_create_default());
+    //install_serial();  //config serial pins
+    serial_handler->register_serial_events(*event_loop);
 
-    //ESP_ERROR_CHECK(esp_event_post(NULL, EVENT_ID_SEND_INTEGER, NULL,0,0));
-    //esp_event_loop_create_default();
-
+/*    
     while(1){
         char str[] = "Hello world!\n";
         uart_write_bytes(ECHO_UART_PORT_NUM, str, strlen(str));
@@ -62,6 +62,5 @@ void vTaskSerial(esp_event_loop_handle_t* event_loop)
         esp_event_post_to(*event_loop, MAIN_EVENT, EVENT_ID_SEND_INTEGER, NULL,0,0);
         vTaskDelay(1000*30 / portTICK_PERIOD_MS);
     }
-
-    vTaskDelete(NULL);
+*/
 }

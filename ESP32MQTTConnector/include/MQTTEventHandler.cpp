@@ -1,16 +1,20 @@
 #include <cstdio>
 #include <functional>
 #include <iostream>
+#include <string>
+#include <map>
 
 #include "mqtt_client.h"
 #include "esp_event.h"
-#include "event_design.hpp"
+#include "MQTTEventHandler.hpp"
 #include "esp_log.h"
 
-
-ESP_EVENT_DEFINE_BASE(CUSTOM_EVENT_BASE);
-
 using namespace std;
+
+string MQTTEventHandler::getClassTag(){
+    string tag(MQTTEventHandler::CLASS_TAG);
+    return tag;
+}
 
 void MQTTEventHandler::register_mqtt_events(esp_mqtt_client* client)
 {
@@ -26,12 +30,13 @@ void MQTTEventHandler::register_mqtt_events(esp_mqtt_client* client)
 void MQTTEventHandler::onEventConnected(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data){
     MQTTEventHandler* context = (MQTTEventHandler*)handler_args;
     context->log("ESP MQTT Connected");
-    esp_mqtt_client_subscribe(context->client, "/teste", 0);
+    context->is_mqtt_connected = true;
 }
 
 void MQTTEventHandler::onEventDisconnected(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data){
     MQTTEventHandler* context = (MQTTEventHandler*)handler_args;
     context->log("ESP MQTT Disconnected");
+    context->is_mqtt_connected = false;
 }
 
 void MQTTEventHandler::onEventSubscribed(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data){
@@ -58,11 +63,27 @@ void MQTTEventHandler::onEventData(void *handler_args, esp_event_base_t base, in
     string payload(event->data, event->data_len);
     context->log("Topic: " + topic);
     context->log("Payload: " + payload);
-}
-
-void MQTTEventHandler::log(string message){
-    if (LOG_LOCAL_LEVEL >= ESP_LOG_INFO) {
-        const char* format = "I (%d) %s: %s\n"; 
-        printf(format,esp_log_timestamp(),MQTTEventHandler::CLASS_TAG,message.c_str());
+    if (context->on_message_callbacks.find(topic) != context->on_message_callbacks.end())
+    {
+        context->on_message_callbacks[topic](payload);
     }
 }
+
+void MQTTEventHandler::postData(string topic, string data){
+    if(this->is_mqtt_connected){
+        esp_mqtt_client_publish(this->client, topic.c_str(), data.c_str(), data.length(), 0, 0);
+    }
+}
+
+void MQTTEventHandler::subscribeTo(string topic, function<void(string)> callback){
+    if(this->is_mqtt_connected){
+        esp_mqtt_client_subscribe(this->client, topic.c_str(), 0);
+        this->on_message_callbacks[topic] = callback;
+    }else{
+        this->log("MQTT not connected");
+    }
+}
+
+
+
+

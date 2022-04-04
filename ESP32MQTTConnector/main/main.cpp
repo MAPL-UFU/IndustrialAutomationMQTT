@@ -3,6 +3,7 @@
 #define PROGRAM_TAG "ESP32_CLOUD_CONNECTOR"
 
 #include <iostream>
+#include <string>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -14,14 +15,49 @@
 #include "esp_event.h"
 
 #include "mqtt_connector.cpp"
-//#include "serial_connector.cpp"
+#include "serial_connector.cpp"
+#include "CustomEventHandler.hpp"
 
 using namespace std;
 
-void main_event_handler(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data)
-{
-    cout<<"main_event_handler"<<endl;
-}
+/*
+void vTaskLocalControl(void *pvParameters){
+    CustomEventHandler* context = (CustomEventHandler*)pvParameters;
+    cout<<("Task Local Control");
+    while(1){
+        if(context->isMQTTConnected()){
+            context->postData("valvula","Acionado");
+        }
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+};
+*/
+
+
+void vTaskLocalControl(void *pvParameters){
+    CustomEventHandler* context = (CustomEventHandler*)pvParameters;
+    cout<<("Task Local Control");
+    context->subscribeTo("valvula",[](string pay){
+        cout<<"Received: "<<pay<<endl;
+        cout<<("Valvula Acionada no local control")<<endl;
+    });
+    while(1){
+        if(context->isMQTTConnected()){
+            cout<<"MQTT Connected"<<endl;
+            context->subscribeTo("valvula",[](string pay){
+                cout<<"Received: "<<pay<<endl;
+                cout<<("Valvula Acionada no local control")<<endl;
+            });
+            break;
+        }
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+    }
+    while(1){
+        cout<<"Loading..."<<endl;
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+};
+
 
 void main_init(){
     esp_log_level_set("*", ESP_LOG_INFO);
@@ -37,20 +73,18 @@ void main_init(){
 
     esp_event_loop_handle_t* loop_handle_pointer = new esp_event_loop_handle_t(); 
     esp_event_loop_create(&loop_args,loop_handle_pointer); // using a dedicated task
-    //esp_event_handler_register_with(*loop_handle_pointer, CUSTOM_EVENT_BASE, EVENT_SEND_SERIAL_STRING_ID, main_event_handler, NULL);
 
-    startMQTT(loop_handle_pointer); // Start MQTT, this use event loop in a specific task                        
-/*
-    xTaskCreatePinnedToCore(vTaskSerial,
-                            "vTaskSerial", 
+    CustomEventHandler* custom_event_handler = new CustomEventHandler();
+    startMQTT(custom_event_handler,loop_handle_pointer);                       
+    startSerial(custom_event_handler,loop_handle_pointer);
+
+    xTaskCreatePinnedToCore(vTaskLocalControl,
+                            "vTaskLocalControl", 
                             2048, 
-                            loop_handle_pointer, 
+                            custom_event_handler, 
                             0, 
                             NULL, 
-                            tskNO_AFFINITY);                 
-*/
-
-    //ESP_ERROR_CHECK(esp_event_post_to(*loop_handle_pointer , CUSTOM_EVENT_BASE, EVENT_SEND_SERIAL_STRING_ID, NULL,0,0));
+                            tskNO_AFFINITY); 
 }
 
 extern "C" void app_main(void)
