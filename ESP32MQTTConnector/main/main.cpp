@@ -20,7 +20,7 @@
 
 using namespace std;
 
-/*
+//MQTT Sender Pub
 void vTaskLocalControl(void *pvParameters){
     CustomEventHandler* context = (CustomEventHandler*)pvParameters;
     cout<<("Task Local Control");
@@ -31,9 +31,9 @@ void vTaskLocalControl(void *pvParameters){
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 };
-*/
 
-
+//MQTT Receiver Sub
+/*
 void vTaskLocalControl(void *pvParameters){
     CustomEventHandler* context = (CustomEventHandler*)pvParameters;
     cout<<("Task Local Control");
@@ -57,7 +57,7 @@ void vTaskLocalControl(void *pvParameters){
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 };
-
+*/
 
 void main_init(){
     esp_log_level_set("*", ESP_LOG_INFO);
