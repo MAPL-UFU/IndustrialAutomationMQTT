@@ -1,11 +1,10 @@
-# IndustrialAutomationMQTT
+# WPA2-Enterprise ESP32 Example 
 
-Prezado Thiago.
+Use it for acessing wifi UFUi-Institucional with your personal acess (works everywhere. Internally this is just an example reimplementation of the codes available in idf documentation for acessing wifi with WPA2-ENT using a Semaphore interface like used in protocol example connection tools. you can use it inside other projects witch you need a Internet connection (enjoy).
 
-Prepare esse repositório como se fosse um manual do que está desenvolvendo. 
+- MSCHCAVPv2 is the most simple way to acess, in other you will need root UFU CA certificates.
 
-Assim outros alunos (UFU ou externos) poderão ter como replicar o que fez e/ ou acrescentar melhorias.
+Refs:
 
-Att.
-
-Prof. Jean
+example connection from protocol_examples_common - example connect
+example WPA2-ENT - wpa-ent example
