@@ -26,7 +26,7 @@ void vTaskLocalControl(void *pvParameters){
     cout<<("Task Local Control");
     while(1){
         if(context->isMQTTConnected()){
-            context->postData("valvula","Acionado");
+            context->postData("lem/valve","Acionado");
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }

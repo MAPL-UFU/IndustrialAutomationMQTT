@@ -24,14 +24,14 @@ using namespace std;
 void vTaskLocalControl(void *pvParameters){
     CustomEventHandler* context = (CustomEventHandler*)pvParameters;
     cout<<("Task Local Control");
-    context->subscribeTo("valvula",[](string pay){
+    context->subscribeTo("lem/valve",[](string pay){
         cout<<"Received: "<<pay<<endl;
         cout<<("Valvula Acionada no local control")<<endl;
     });
     while(1){
         if(context->isMQTTConnected()){
             cout<<"MQTT Connected"<<endl;
-            context->subscribeTo("valvula",[](string pay){
+            context->subscribeTo("lem/valve",[](string pay){
                 cout<<"Received: "<<pay<<endl;
                 cout<<("Valvula Acionada no local control")<<endl;
             });
@@ -40,7 +40,7 @@ void vTaskLocalControl(void *pvParameters){
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
     while(1){
-        cout<<"Loading..."<<endl;
+        cout<<"Waiting Data..."<<endl;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 };
