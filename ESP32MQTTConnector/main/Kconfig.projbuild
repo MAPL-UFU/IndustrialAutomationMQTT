@@ -1,5 +1,53 @@
 # put here your custom config value
 
+menu "Enterprise Network Config"
+
+    config EXAMPLE_WIFI_SSID
+        string "WiFi SSID"
+        default "wpa2_test"
+        help
+            SSID (network name) for the example to connect to.
+
+    choice
+        prompt "Phase2 method for TTLS"
+        default EXAMPLE_EAP_METHOD_TTLS_PHASE2_MSCHAPV2
+        config EXAMPLE_EAP_METHOD_TTLS_PHASE2_MSCHAPV2
+            bool "MSCHAPV2"
+        config EXAMPLE_EAP_METHOD_TTLS_PHASE2_MSCHAP
+            bool "MSCHAP"
+        config EXAMPLE_EAP_METHOD_TTLS_PHASE2_PAP
+            bool "PAP"
+        config EXAMPLE_EAP_METHOD_TTLS_PHASE2_CHAP
+            bool "CHAP"
+    endchoice
+
+    config EXAMPLE_EAP_METHOD_TTLS_PHASE_2
+        int
+        default 1 if EXAMPLE_EAP_METHOD_TTLS_PHASE2_MSCHAPV2
+        default 2 if EXAMPLE_EAP_METHOD_TTLS_PHASE2_MSCHAP
+        default 3 if EXAMPLE_EAP_METHOD_TTLS_PHASE2_PAP
+        default 4 if EXAMPLE_EAP_METHOD_TTLS_PHASE2_CHAP
+
+    config EXAMPLE_EAP_ID
+        string "EAP ID"
+        default "example@espressif.com"
+        help
+            Identity in phase 1 of EAP procedure.
+
+    config EXAMPLE_EAP_USERNAME
+        string "EAP USERNAME"
+        default "espressif"
+        help
+            Username for EAP method (PEAP and TTLS).
+
+    config EXAMPLE_EAP_PASSWORD
+        string "EAP PASSWORD"
+        default "test11"
+        help
+            Password for EAP method (PEAP and TTLS).
+
+endmenu
+
 menu "CLOUD MAN CONFIG"
     config MQTT_IP_ADRESS
         string

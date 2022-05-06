@@ -10,7 +10,7 @@
 #include "lwip/dns.h"
 #include "lwip/netdb.h"
 
-#include "mqtt_client.h"
+#include "wifi_lib.cpp"
 #include "MQTTEventHandler.hpp"
 
 void startMQTT( MQTTEventHandler* mqtt_controller, esp_event_loop_handle_t* event_loop)
@@ -19,7 +19,8 @@ void startMQTT( MQTTEventHandler* mqtt_controller, esp_event_loop_handle_t* even
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
-    ESP_ERROR_CHECK(example_connect());
+    //ESP_ERROR_CHECK(example_connect());
+    ESP_ERROR_CHECK(initialise_wifi());
 
     const esp_mqtt_client_config_t mqtt_cfg={
         .event_loop_handle = *event_loop,
