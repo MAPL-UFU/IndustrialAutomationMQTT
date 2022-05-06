@@ -1,3 +1,4 @@
 build/
+cert/
 sdkconfig
 sdkconfig.old
