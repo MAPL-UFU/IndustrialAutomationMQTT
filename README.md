@@ -8,3 +8,5 @@ Api designed program for iteracting with MQTT libraries for ESP32
 if you want to use this Library over a WPA2-Ent (Enterprize network plase, see '[wifi-ent](https://github.com/MAPL-UFU/IndustrialAutomationMQTT/tree/wifi-ent)' branch) 
 
 #Development
+
+-Compiled With: GCC std=gnu17
