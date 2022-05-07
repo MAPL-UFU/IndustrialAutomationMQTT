@@ -9,4 +9,4 @@ if you want to use this Library over a WPA2-Ent (Enterprize network plase, see '
 
 #Development
 
--Compiled With: GCC std=gnu17
+-Compiled With: GCC std=gnu17 (There is no guarantee that the code will work with previous versions)
