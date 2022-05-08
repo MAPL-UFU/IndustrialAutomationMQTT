@@ -1,3 +1,0 @@
-[submodule "ESP32MQTTConnector/cpp-esp-wifi"]
-	path = ./ESP32MQTTConnector/components/cpp-esp-wifi
-	url = https://github.com/MAPL-UFU/cpp-esp-wifi
