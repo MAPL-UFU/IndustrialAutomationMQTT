@@ -13,4 +13,5 @@ Notes:
 
 - Compiled With: GCC std=gnu17 (There is no guarantee that the code will work with previous versions)
 
-- To execute a hard update repository (including submodules) you will need to use the commend 'git submodule update --init --force'
+- To execute a hard update repository (including submodules) you will need to use the command:
+     'git submodule update --init --force'
