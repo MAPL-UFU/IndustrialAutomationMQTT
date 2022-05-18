@@ -28,3 +28,4 @@ Notes:
 - To execute a hard update repository (including submodules) you will need to use the command:
 
     ``` git submodule update --init --force --remote ```
+([see-more](https://git-scm.com/book/en/v2/Git-Tools-Submodules))
