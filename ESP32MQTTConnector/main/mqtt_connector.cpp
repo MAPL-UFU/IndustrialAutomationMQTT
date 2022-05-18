@@ -11,7 +11,7 @@
 
 #include "mqtt_client.h"
 #include "MQTTEventHandler.hpp"
-#include "WifiHandler.hpp"
+#include "WifiEventHandler.hpp"
 
 void startMQTT( MQTTEventHandler* mqtt_controller, esp_event_loop_handle_t* event_loop)
 {
@@ -19,7 +19,9 @@ void startMQTT( MQTTEventHandler* mqtt_controller, esp_event_loop_handle_t* even
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
-    ESP_ERROR_CHECK(initialise_wifi());
+
+    WifiEventHandler* wifi_controller = new WifiEventHandler();
+    wifi_controller->initialise_wifi();
 
     const esp_mqtt_client_config_t mqtt_cfg={
         .event_loop_handle = *event_loop,

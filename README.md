@@ -12,7 +12,7 @@ This project was divided two main parts:
     - [MAPL cpp-esp-mqtt] -> In Development
     - [MAPL cpp-esp-serial] -> In Development
 
-    If you want to integrate a module please follow link above and see module documentation about how to do it using esp-idf model.
+    If you want to integrate only a module please follow link above and see module documentation about how to do it using esp-idf model.
 
 2. Test Example Codes:
 

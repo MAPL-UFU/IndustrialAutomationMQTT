@@ -1,6 +1,11 @@
+/***
+ * this is a class for unificating the event handling for example
+ *
+ **/
 #pragma once
 #include "MQTTEventHandler.hpp"
 #include "SerialEventHandler.hpp"
+
 
 class CustomEventHandler : public MQTTEventHandler, public SerialEventHandler
 {

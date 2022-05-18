@@ -1,13 +1,1 @@
 # put here your custom config value
-
-menu "CLOUD MAN CONFIG"
-    config MQTT_IP_ADRESS
-        string
-        prompt "MQTT_IP_ADRESS" 
-        default "0.0.0.0"
-
-    config  MQTT_IP_PORT
-        int
-        prompt  "MQTT_IP_PORT"
-        default 1883
-endmenu

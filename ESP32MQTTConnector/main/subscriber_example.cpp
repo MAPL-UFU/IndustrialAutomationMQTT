@@ -10,6 +10,7 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 #include "freertos/queue.h"
+#include "driver/gpio.h"
 
 
 #include "esp_log.h"
@@ -18,6 +19,20 @@
 #include "mqtt_connector.cpp"
 #include "serial_connector.cpp"
 #include "CustomEventHandler.hpp"
+
+#define GPIO_OUTPUT_IO_0   (gpio_num_t)12
+#define GPIO_OUTPUT_PIN_SEL  (1ULL<<GPIO_OUTPUT_IO_0)
+
+void start_gpio(){
+    gpio_config_t io_conf = {};
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    //bit mask of the pins that you want to set,e.g.GPIO18/19
+    io_conf.pin_bit_mask = GPIO_OUTPUT_PIN_SEL;
+    io_conf.pull_down_en = (gpio_pulldown_t)0;
+    io_conf.pull_up_en = (gpio_pullup_t)0;
+    gpio_config(&io_conf);
+}
 
 using namespace std;
 
@@ -34,6 +49,12 @@ void vTaskLocalControl(void *pvParameters){
             context->subscribeTo("lem/valve",[](string pay){
                 cout<<"Received: "<<pay<<endl;
                 cout<<("Valvula Acionada no local control")<<endl;
+                if (pay == "Acionado"){
+                    gpio_set_level(GPIO_OUTPUT_IO_0, 1);
+                }
+                if (pay == "Desacionado"){
+                    gpio_set_level(GPIO_OUTPUT_IO_0, 0);
+                }
             });
             break;
         }
@@ -48,7 +69,7 @@ void vTaskLocalControl(void *pvParameters){
 void sub_main(){
     esp_log_level_set("*", ESP_LOG_INFO);
     ESP_LOGI(PROGRAM_TAG, "Main Task In itializing");
- 
+    start_gpio();
     esp_event_loop_args_t loop_args = { 
         .queue_size = 10 , 
         .task_name = "main_event_loop",

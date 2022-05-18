@@ -19,14 +19,40 @@
 #include "serial_connector.cpp"
 #include "CustomEventHandler.hpp"
 
+#define GPIO_INPUT_IO_0     (gpio_num_t)2
+#define GPIO_INPUT_PIN_SEL  (1ULL<<GPIO_INPUT_IO_0)
+#define ESP_INTR_FLAG_DEFAULT 0
+
 using namespace std;
 
+void start_gpio(){
+    gpio_config_t io_conf = {};
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.pull_up_en = (gpio_pullup_t)1;
+    io_conf.pull_down_en = (gpio_pulldown_t)0;
+    gpio_config(&io_conf);
+
+}
+
 void vTaskLocalControl(void *pvParameters){
+    int i=0;
     CustomEventHandler* context = (CustomEventHandler*)pvParameters;
     cout<<("Task Local Control");
     while(1){
         if(context->isMQTTConnected()){
-            context->postData("lem/valve","Acionado");
+            if (gpio_get_level(GPIO_INPUT_IO_0) == 1){
+                context->postData("lem/valve","Acionado");
+            }
+            else{
+                i++;
+                if (i == 5){
+                    i=0;
+                    context->postData("lem/valve","Desacionado");
+                }
+
+            }
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
@@ -35,7 +61,7 @@ void vTaskLocalControl(void *pvParameters){
 void pub_main(){
     esp_log_level_set("*", ESP_LOG_INFO);
     ESP_LOGI(PROGRAM_TAG, "Main Task In itializing");
- 
+    start_gpio();
     esp_event_loop_args_t loop_args = { 
         .queue_size = 10 , 
         .task_name = "main_event_loop",
