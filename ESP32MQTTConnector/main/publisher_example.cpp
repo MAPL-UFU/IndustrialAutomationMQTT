@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <string>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -42,17 +43,24 @@ void vTaskLocalControl(void *pvParameters){
     cout<<("Task Local Control");
     while(1){
         if(context->isMQTTConnected()){
+            string message("");
             if (gpio_get_level(GPIO_INPUT_IO_0) == 1){
-                context->postData("lem/valve","Acionado");
+                message += "{\
+                    \"message\": \"Acionado\",\
+                    \"sequence\": 1\
+                }";
             }
             else{
                 i++;
                 if (i == 5){
                     i=0;
-                    context->postData("lem/valve","Desacionado");
+                    message += "{\
+                        \"message\": \"Desligado\",\
+                        \"sequence\": "+to_string(i)+"\
+                    }";
                 }
-
             }
+            context->postData("lem/valve",message.c_str());
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
@@ -79,7 +87,7 @@ void pub_main(){
 
     xTaskCreatePinnedToCore(vTaskLocalControl,
                             "vTaskLocalControl", 
-                            2048, 
+                            2048*8, 
                             custom_event_handler, 
                             0, 
                             NULL, 
