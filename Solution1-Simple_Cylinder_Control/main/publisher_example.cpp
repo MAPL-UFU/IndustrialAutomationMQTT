@@ -12,12 +12,12 @@
 #include "freertos/semphr.h"
 #include "freertos/queue.h"
 
+#include "driver/gpio.h"
 
 #include "esp_log.h"
 #include "esp_event.h"
 
 #include "mqtt_connector.cpp"
-#include "serial_connector.cpp"
 #include "CustomEventHandler.hpp"
 
 #define GPIO_INPUT_IO_0     (gpio_num_t)2
@@ -82,9 +82,7 @@ void pub_main(){
     esp_event_loop_create(&loop_args,loop_handle_pointer); // using a dedicated task
 
     CustomEventHandler* custom_event_handler = new CustomEventHandler();
-    startMQTT(custom_event_handler,loop_handle_pointer);                       
-    startSerial(custom_event_handler,loop_handle_pointer);
-
+    startMQTT(custom_event_handler,loop_handle_pointer);
     xTaskCreatePinnedToCore(vTaskLocalControl,
                             "vTaskLocalControl", 
                             2048*8, 

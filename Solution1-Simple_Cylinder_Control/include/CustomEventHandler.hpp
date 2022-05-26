@@ -4,10 +4,9 @@
  **/
 #pragma once
 #include "MQTTEventHandler.hpp"
-#include "SerialEventHandler.hpp"
 
 
-class CustomEventHandler : public MQTTEventHandler, public SerialEventHandler
+class CustomEventHandler : public MQTTEventHandler
 {
     private:
         inline static const char* CLASS_TAG = "CustomEventHandler";

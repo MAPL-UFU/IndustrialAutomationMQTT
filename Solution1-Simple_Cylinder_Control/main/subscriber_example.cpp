@@ -83,7 +83,6 @@ void sub_main(){
 
     CustomEventHandler* custom_event_handler = new CustomEventHandler();
     startMQTT(custom_event_handler,loop_handle_pointer);                       
-    startSerial(custom_event_handler,loop_handle_pointer);
 
     xTaskCreatePinnedToCore(vTaskLocalControl,
                             "vTaskLocalControl", 
