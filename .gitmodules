@@ -28,3 +28,39 @@
 [submodule "Solution2-Two_Cylinder_Control/components/cpp-esp-wifi"]
 	path = Solution2-Two_Cylinder_Control/components/cpp-esp-wifi
 	url = https://github.com/MAPL-UFU/cpp-esp-wifi
+[submodule "Solution1-Simple_Cylinder_Control/Publisher/components/cpp-esp-e-handler"]
+	path = Solution1-Simple_Cylinder_Control/Publisher/components/cpp-esp-e-handler
+	url = https://github.com/MAPL-UFU/cpp-esp-e-handler
+[submodule "Solution1-Simple_Cylinder_Control/Publisher/components/cpp-esp-wifi"]
+	path = Solution1-Simple_Cylinder_Control/Publisher/components/cpp-esp-wifi
+	url = https://github.com/MAPL-UFU/cpp-esp-wifi
+[submodule "Solution1-Simple_Cylinder_Control/Publisher/components/cpp-esp-mqtt"]
+	path = Solution1-Simple_Cylinder_Control/Publisher/components/cpp-esp-mqtt
+	url = https://github.com/MAPL-UFU/cpp-esp-mqtt
+[submodule "Solution1-Simple_Cylinder_Control/Subscriber/components/cpp-esp-mqtt"]
+	path = Solution1-Simple_Cylinder_Control/Subscriber/components/cpp-esp-mqtt
+	url = https://github.com/MAPL-UFU/cpp-esp-mqtt
+[submodule "Solution1-Simple_Cylinder_Control/Subscriber/components/cpp-esp-wifi"]
+	path = Solution1-Simple_Cylinder_Control/Subscriber/components/cpp-esp-wifi
+	url = https://github.com/MAPL-UFU/cpp-esp-wifi
+[submodule "Solution1-Simple_Cylinder_Control/Subscriber/components/cpp-esp-e-handler"]
+	path = Solution1-Simple_Cylinder_Control/Subscriber/components/cpp-esp-e-handler
+	url = https://github.com/MAPL-UFU/cpp-esp-e-handler
+[submodule "Solution2-Two_Cylinder_Control/A-Cylinder/components/cpp-esp-e-handler"]
+	path = Solution2-Two_Cylinder_Control/A-Cylinder/components/cpp-esp-e-handler
+	url = https://github.com/MAPL-UFU/cpp-esp-e-handler
+[submodule "Solution2-Two_Cylinder_Control/A-Cylinder/components/cpp-esp-wifi"]
+	path = Solution2-Two_Cylinder_Control/A-Cylinder/components/cpp-esp-wifi
+	url = https://github.com/MAPL-UFU/cpp-esp-wifi
+[submodule "Solution2-Two_Cylinder_Control/A-Cylinder/components/cpp-esp-mqtt"]
+	path = Solution2-Two_Cylinder_Control/A-Cylinder/components/cpp-esp-mqtt
+	url = https://github.com/MAPL-UFU/cpp-esp-mqtt
+[submodule "Solution2-Two_Cylinder_Control/B-Cylinder/components/cpp-esp-e-handler"]
+	path = Solution2-Two_Cylinder_Control/B-Cylinder/components/cpp-esp-e-handler
+	url = https://github.com/MAPL-UFU/cpp-esp-e-handler
+[submodule "Solution2-Two_Cylinder_Control/B-Cylinder/components/cpp-esp-wifi"]
+	path = Solution2-Two_Cylinder_Control/B-Cylinder/components/cpp-esp-wifi
+	url = https://github.com/MAPL-UFU/cpp-esp-wifi
+[submodule "Solution2-Two_Cylinder_Control/B-Cylinder/components/cpp-esp-mqtt"]
+	path = Solution2-Two_Cylinder_Control/B-Cylinder/components/cpp-esp-mqtt
+	url = https://github.com/MAPL-UFU/cpp-esp-mqtt

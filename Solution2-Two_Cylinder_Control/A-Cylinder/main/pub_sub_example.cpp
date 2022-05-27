@@ -84,7 +84,7 @@ void vTaskLocalControl(void *pvParameters){
     }
 };
 
-void sub_main(){
+void pub_sub_main(){
     esp_log_level_set("*", ESP_LOG_INFO);
     ESP_LOGI(PROGRAM_TAG, "Main Task In itializing");
     start_gpio();
