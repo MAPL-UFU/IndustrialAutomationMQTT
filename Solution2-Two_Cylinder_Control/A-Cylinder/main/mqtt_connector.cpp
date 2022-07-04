@@ -35,12 +35,14 @@ void startMQTT( MQTTEventHandler* mqtt_controller, esp_event_loop_handle_t* even
         .event_loop_handle = *event_loop,
         .host = CONFIG_MQTT_IP_ADRESS,
         .port = CONFIG_MQTT_IP_PORT,
-        .client_id = "basicPubSub", 
-        .cert_pem = (const char *)server_cert_pem_start,
-        .client_cert_pem = (const char *)client_cert_pem_start,
-        .client_key_pem = (const char *)client_key_pem_start,
-        .transport = MQTT_TRANSPORT_OVER_SSL,
-        .protocol_ver = MQTT_PROTOCOL_V_3_1_1
+        .username = "mapl-iot",
+        .password = "NgJlVBYOkeNK2GIw"
+        //.client_id = "AActuator", 
+        //.cert_pem = (const char *)server_cert_pem_start,
+        //.client_cert_pem = (const char *)client_cert_pem_start,
+        //.client_key_pem = (const char *)client_key_pem_start,
+        //.transport = MQTT_TRANSPORT_OVER_SSL,
+        //.protocol_ver = MQTT_PROTOCOL_V_3_1_1
     };
 
     esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);

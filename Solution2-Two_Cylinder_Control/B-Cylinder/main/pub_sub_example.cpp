@@ -23,8 +23,10 @@
 #define GPIO_OUTPUT_IO_0   (gpio_num_t)12
 #define GPIO_OUTPUT_PIN_SEL  (1ULL<<GPIO_OUTPUT_IO_0)
 
+
 #define GPIO_INPUT_IO_0     (gpio_num_t)2
-#define GPIO_INPUT_PIN_SEL  (1ULL<<GPIO_INPUT_IO_0)
+#define GPIO_INPUT_IO_1     (gpio_num_t)4
+#define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) || (1ULL<<GPIO_INPUT_IO_0))
 #define ESP_INTR_FLAG_DEFAULT 0
 
 void start_gpio(){
@@ -51,21 +53,21 @@ using namespace std;
 void vTaskLocalControl(void *pvParameters){
     CustomEventHandler* context = (CustomEventHandler*)pvParameters;
     cout<<("Task Local Control");
-    context->subscribeTo("lem/valve",[](string pay){
+    context->subscribeTo("lem/valveB",[](string pay){
         cout<<"Received: "<<pay<<endl;
         cout<<("Valvula Acionada no local control")<<endl;
     });
     while(1){
         if(context->isMQTTConnected()){
             cout<<"MQTT Connected"<<endl;
-            context->subscribeTo("lem/valve",[](string pay){
+            context->subscribeTo("lem/valveB",[](string pay){
                 cout<<"Received: "<<pay<<endl;
                 cout<<("Valvula Acionada no local control")<<endl;
                 if (pay == "Acionado"){
-                    gpio_set_level(GPIO_OUTPUT_IO_0, 0);
+                    gpio_set_level(GPIO_OUTPUT_IO_0, 1);
                 }
                 if (pay == "Desacionado"){
-                    gpio_set_level(GPIO_OUTPUT_IO_0, 1);
+                    gpio_set_level(GPIO_OUTPUT_IO_0, 0);
                 }
             });
             break;
@@ -75,10 +77,11 @@ void vTaskLocalControl(void *pvParameters){
     while(1){
         if (gpio_get_level(GPIO_INPUT_IO_0) == 1){    
             cout<<"Auto"<<endl;
-            context->postData("lem/valve","Desacionado");
-        }else{
-            context->postData("lem/valve","Acionado");
-            cout<<"Baixo"<<endl;
+            context->postData("lem/sensorB","Acionado");
+        }
+        if (gpio_get_level(GPIO_INPUT_IO_1) == 1){    
+            cout<<"Auto"<<endl;
+            context->postData("lem/sensorB","Desacionado");
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
